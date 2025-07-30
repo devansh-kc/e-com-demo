@@ -47,6 +47,8 @@ export default function Home() {
 
         return [...prev, ...filtered];
       });
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message ?? "Something went wrong");
     } finally {
