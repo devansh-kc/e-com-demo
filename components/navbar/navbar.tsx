@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, User } from "lucide-react";
 import { useState } from "react";
 import CartSidebar from "@/components/cart-sidebar/cart-sidebar";
 
 export default function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
   return (
     <>
       <header className="sticky top-0 z-50 bg-white shadow-md">
@@ -28,7 +28,8 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-4 items-center relative">
+            {/* Cart Button */}
             <button
               onClick={() => setIsSidebarOpen(true)}
               className="relative hover:text-blue-600 transition"
@@ -38,6 +39,31 @@ export default function Navbar() {
                 2
               </span>
             </button>
+
+            {/* User Icon */}
+            <div className="relative">
+              <button
+                onClick={() => setShowUserDropdown(!showUserDropdown)}
+                className="hover:text-blue-600 transition"
+              >
+                <User size={22} />
+              </button>
+
+              {/* Dropdown */}
+              {showUserDropdown && (
+                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border rounded-md z-50">
+                  <div className="px-4 py-2 text-sm text-gray-700 border-b">
+                    Hello, <strong>Devansh</strong>
+                  </div>
+                  <Link
+                    href="/profile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Edit Profile
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
