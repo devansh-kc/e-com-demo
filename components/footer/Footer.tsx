@@ -8,7 +8,7 @@ export default function Footer() {
         {/* Brand Info */}
         <div>
           <h2 className="text-lg font-semibold text-gray-900">
-            Acme Fashion Hub
+            Acme Electronic Hub
           </h2>
           <p className="mt-2">
             Your one-stop shop for fashion, electronics, and more.

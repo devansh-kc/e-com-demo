@@ -1,6 +1,6 @@
 import React from "react";
 
-function ProductCardSkeleton() {
+const ProductCardSkeleton = () => {
   const numberOfSkeletons = 12;
 
   return (
@@ -8,30 +8,30 @@ function ProductCardSkeleton() {
       {Array.from({ length: numberOfSkeletons }).map((_, index) => (
         <div
           key={index}
-          className="bg-white shadow-md rounded-xl overflow-hidden animate-pulse"
+          className="bg-white rounded-xl shadow-sm border border-gray-100 animate-pulse overflow-hidden"
         >
           {/* Image Skeleton */}
-          <div className="w-full h-64 bg-gray-200" />
+          <div className="aspect-[4/3] bg-gray-200 w-full" />
 
-          {/* Content Skeleton */}
-          <div className="p-4 space-y-2">
+          {/* Content */}
+          <div className="p-4 space-y-3">
             {/* Title */}
             <div className="h-5 bg-gray-300 rounded w-3/4" />
 
-            {/* Description */}
+            {/* Description lines */}
             <div className="h-4 bg-gray-200 rounded w-full" />
             <div className="h-4 bg-gray-200 rounded w-5/6" />
 
-            {/* Price + Button Skeleton */}
-            <div className="flex justify-between items-center mt-4">
-              <div className="h-6 bg-gray-300 rounded w-16" />
-              <div className="h-8 bg-gray-400 rounded w-20" />
+            {/* Price and Button */}
+            <div className="flex justify-between items-center pt-2">
+              <div className="h-6 w-16 bg-gray-300 rounded" />
+              <div className="h-8 w-20 bg-gray-400 rounded" />
             </div>
           </div>
         </div>
       ))}
     </>
   );
-}
+};
 
 export default ProductCardSkeleton;
