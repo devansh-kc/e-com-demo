@@ -14,6 +14,5 @@ export default async function UserPage({
 
   // If no new products, stop further loading
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return <ProductDetailsCard product={detailPageData} />;
 }

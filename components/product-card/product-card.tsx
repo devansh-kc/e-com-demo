@@ -38,7 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <article className="bg-white shadow-md rounded-xl overflow-hidden transition-transform hover:scale-105 duration-300">
       <figure>
-        <Image
+        <img
           src={image}
           alt={title}
           width={300}

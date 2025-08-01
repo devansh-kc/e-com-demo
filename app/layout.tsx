@@ -3,8 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer/Footer";
-import { Suspense } from "react";
-import { Loader } from "lucide-react";
 import { ReduxProvider } from "@/redux-slice/redux-provider/redux-provider";
 import { Toaster } from "react-hot-toast";
 
