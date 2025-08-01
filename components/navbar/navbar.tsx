@@ -4,10 +4,14 @@ import Link from "next/link";
 import { ShoppingCart, User } from "lucide-react";
 import { useState } from "react";
 import CartSidebar from "@/components/cart-sidebar/cart-sidebar";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 export default function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const cartItems = useSelector((state: RootState) => state.CartSlice.items);
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   return (
     <>
       <header className="sticky top-0 z-50 bg-white shadow-md">
@@ -23,9 +27,6 @@ export default function Navbar() {
             <Link href="/about" className="hover:text-blue-600 transition">
               About
             </Link>
-            <Link href="/contact" className="hover:text-blue-600 transition">
-              Contact
-            </Link>
           </nav>
 
           <div className="flex gap-4 items-center relative">
@@ -35,9 +36,11 @@ export default function Navbar() {
               className="relative hover:text-blue-600 transition"
             >
               <ShoppingCart size={22} />
-              <span className="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-semibold">
-                2
-              </span>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-semibold">
+                  {cartCount}
+                </span>
+              )}
             </button>
 
             {/* User Icon */}
@@ -55,12 +58,9 @@ export default function Navbar() {
                   <div className="px-4 py-2 text-sm text-gray-700 border-b">
                     Hello, <strong>Devansh</strong>
                   </div>
-                  <Link
-                    href="/profile"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
+                  <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Edit Profile
-                  </Link>
+                  </button>
                 </div>
               )}
             </div>
@@ -72,18 +72,6 @@ export default function Navbar() {
       <CartSidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
-        isEmpty={false} // change based on your logic
-        cartItems={[
-          {
-            id: "1",
-            name: "Wireless Mouse",
-            image:
-              "https://storage.googleapis.com/fir-auth-1c3bc.appspot.com/1692255251854-xbox.jpg",
-            variant: "Black",
-            price: 25.99,
-            quantity: 1,
-          },
-        ]}
       />
 
       {/* Backdrop */}

@@ -1,6 +1,10 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link"; // ✅ use Next.js Link
+import Link from "next/link";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/redux-slice/cart-slice"; // ✅ make sure this path is correct
 
 interface ProductCardProps {
   image: string;
@@ -17,6 +21,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
   description,
   id,
 }) => {
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        id: id,
+        title,
+        price,
+        image,
+        quantity: 1,
+      })
+    );
+  };
+
   return (
     <article className="bg-white shadow-md rounded-xl overflow-hidden transition-transform hover:scale-105 duration-300">
       <figure>
@@ -34,7 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {description || "A great product just for you!"}
         </p>
         <div className="flex justify-between items-center">
-          <span className="text-xl font-bold text-gray-800">${price}</span>
+          <span className="text-xl font-bold text-gray-800">₹{price}</span>
         </div>
         <div className="flex gap-2 pt-2">
           <Link
@@ -43,7 +61,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
           >
             View Details
           </Link>
-          <button className="flex-1 bg-white border border-black text-black hover:bg-black hover:text-white transition px-4 py-2 rounded">
+          <button
+            onClick={handleAddToCart}
+            className="flex-1 bg-white border border-black text-black hover:bg-black hover:text-white transition px-4 py-2 rounded"
+          >
             Add to Cart
           </button>
         </div>

@@ -21,23 +21,13 @@ export default function Footer() {
           <h3 className="font-medium text-gray-900 mb-3">Quick Links</h3>
           <ul className="space-y-2">
             <li>
-              <Link href="/products" className="hover:text-blue-600">
+              <Link href="/" className="hover:text-blue-600">
                 Products
               </Link>
             </li>
             <li>
               <Link href="/about" className="hover:text-blue-600">
                 About Us
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className="hover:text-blue-600">
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link href="/faq" className="hover:text-blue-600">
-                FAQ
               </Link>
             </li>
           </ul>
@@ -48,11 +38,8 @@ export default function Footer() {
           <h3 className="font-medium text-gray-900 mb-3">Contact</h3>
           <p>
             Email:{" "}
-            <a
-              href="mailto:support@shopeasy.com"
-              className="hover:text-blue-600"
-            >
-              support@shopeasy.com
+            <a href="mailto:support@acme.com" className="hover:text-blue-600">
+              support@Acme.com
             </a>
           </p>
           <p>Phone: +91 98765 43210</p>

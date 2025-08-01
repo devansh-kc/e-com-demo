@@ -1,8 +1,11 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/redux-slice/cart-slice";
 
 type ProductProps = {
-  id: number;
+  id: string;
   title: string;
   brand: string;
   model: string;
@@ -17,13 +20,32 @@ type ProductProps = {
 const ProductDetailsCard: React.FC<{ product: ProductProps }> = ({
   product,
 }) => {
+  const dispatch = useDispatch();
+  const [added, setAdded] = useState(false);
+
   const discountedPrice =
     product.price - (product.price * product.discount) / 100;
+
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        id: product.id,
+        title: product.title,
+        price: discountedPrice,
+        image: product.image,
+        quantity: 1,
+      })
+    );
+    setAdded(true);
+
+    // Optional: revert back to "Add to Cart" after 2 seconds
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start bg-white shadow-xl rounded-2xl p-8">
-        {/* Left: Product Image */}
+        {/* Product Image */}
         <div className="relative w-full h-[450px]">
           <Image
             src={product.image}
@@ -33,7 +55,7 @@ const ProductDetailsCard: React.FC<{ product: ProductProps }> = ({
           />
         </div>
 
-        {/* Right: Product Info */}
+        {/* Product Info */}
         <div className="space-y-6">
           <h1 className="text-3xl font-bold text-gray-900 leading-snug">
             {product.title}
@@ -61,10 +83,10 @@ const ProductDetailsCard: React.FC<{ product: ProductProps }> = ({
           {/* Price Display */}
           <div className="flex items-end space-x-4">
             <span className="text-3xl font-extrabold text-green-600">
-              ${discountedPrice.toFixed(0)}
+              ₹{discountedPrice.toFixed(0)}
             </span>
             <span className="text-lg line-through text-gray-400">
-              ${product.price}
+              ₹{product.price}
             </span>
             <span className="text-sm font-medium text-red-500">
               -{product.discount}% OFF
@@ -83,11 +105,16 @@ const ProductDetailsCard: React.FC<{ product: ProductProps }> = ({
 
           {/* CTA Buttons */}
           <div className="flex gap-4 pt-4">
-            <button className="flex-1 bg-gradient-to-r from-black to-gray-900 text-white py-3 rounded-lg hover:from-gray-800 hover:to-black transition">
-              Add to Cart
-            </button>
-            <button className="flex-1 border border-black text-black py-3 rounded-lg hover:bg-black hover:text-white transition">
-              Buy Now
+            <button
+              onClick={handleAddToCart}
+              disabled={added}
+              className={`flex-1 py-3 rounded-lg transition text-white ${
+                added
+                  ? "bg-green-600 cursor-not-allowed"
+                  : "bg-gradient-to-r from-black to-gray-900 hover:from-gray-800 hover:to-black"
+              }`}
+            >
+              {added ? "Added" : "Add to Cart"}
             </button>
           </div>
         </div>

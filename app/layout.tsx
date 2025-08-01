@@ -5,6 +5,8 @@ import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer/Footer";
 import { Suspense } from "react";
 import { Loader } from "lucide-react";
+import { ReduxProvider } from "@/redux-slice/redux-provider/redux-provider";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,14 +32,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        {/* Header Component */}
-        <Navbar />
+        <ReduxProvider>
+          {/* Header Component */}
+          <Navbar />
 
-        {/* Main content that grows to fill space */}
-        <main className="flex-grow">{children}</main>
+          {/* Main content that grows to fill space */}
+          <main className="flex-grow">{children}</main>
 
-        {/* Sticky Footer at bottom */}
-        <Footer />
+          {/* Sticky Footer at bottom */}
+          <Footer />
+          <Toaster />
+        </ReduxProvider>
       </body>
     </html>
   );
