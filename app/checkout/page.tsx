@@ -30,14 +30,48 @@ export default function CheckoutPage() {
     }
   }, [cartItems, router]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 🔁 You can add validation logic here
-    toast.success("Order placed successfully!");
+    try {
+      const response = await fetch("/api/place-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-    dispatch(clearCart());
-    router.push("/"); // Change if your listing page is at a different route
+        body: JSON.stringify({
+          email: form.email,
+          products: cartItems?.map((cart) => ({
+            productId: cart?.id,
+            quantity: cart.quantity,
+          })),
+
+          shippingDetails: {
+            firstName: form.firstName,
+            lastName: form.lastName,
+            address: form.address,
+            apartment: form.apartment,
+            city: form.city,
+            state: form.state,
+            pincode: form.pincode,
+          },
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to place order");
+      }
+
+      toast.success("Order placed successfully!");
+      dispatch(clearCart());
+      router.push("/"); // redirect to homepage or thank you page
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    }
   };
 
   return (

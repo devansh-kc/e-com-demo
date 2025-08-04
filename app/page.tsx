@@ -5,17 +5,23 @@ import ProductCardSkeleton from "@/components/product-card/skeleton/product-card
 import { useEffect, useState } from "react";
 
 interface Product {
-  id: number;
+  image: string;
   title: string;
   price: number;
-  image: string;
-  description: string;
+  description?: string;
+  productId: string;
+  quantity: number;
+  brand: string;
+  productModel: string;
+  color?: string;
+  category: string;
+  discount?: number;
 }
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [limit, setLimit] = useState<number>(12);
+  const [offset, setOffset] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,20 +30,18 @@ export default function Home() {
       setLoading(true);
       setError(null);
 
-      const res = await fetch(
-        `https://fakestoreapi.in/api/products?limit=${limit}`
-      );
+      const res = await fetch(`/api/fetch-product-data?offset=${offset}`);
 
       if (!res.ok) {
         throw new Error("Failed to fetch products");
       }
 
-      const { products: newProducts } = await res.json();
+      const { data: newProducts } = await res.json();
 
       setProducts((prev) => {
-        const existingIds = new Set(prev.map((p) => p.id));
+        const existingIds = new Set(prev.map((p) => p.productId));
         const filtered = (newProducts ?? []).filter(
-          (item: Product) => !existingIds.has(item.id)
+          (item: Product) => !existingIds.has(item.productId)
         );
 
         // If no new products, stop further loading
@@ -58,11 +62,11 @@ export default function Home() {
 
   useEffect(() => {
     fetchProducts();
-  }, [limit]);
+  }, [offset]);
 
   const handleLoadMore = () => {
     if (!loading && hasMore) {
-      setLimit((prev) => prev + 12);
+      setOffset((prev) => prev + 12);
     }
   };
 
@@ -70,13 +74,7 @@ export default function Home() {
     <div className="container mx-auto">
       <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            title={product.title}
-            price={product.price}
-            image={product.image}
-            id={product.id.toString()}
-          />
+          <ProductCard productData={product} key={product?.productId} />
         ))}
 
         {loading && <ProductCardSkeleton />}

@@ -11,6 +11,17 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "storage.googleapis.com",
+        pathname: "/**", // ← Allow all Firebase/GCS paths
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        pathname: "/**", // ← Allow all Firebase/GCS paths
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**", // ← Allow all Firebase/GCS paths
       },
     ],
   },

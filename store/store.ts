@@ -1,12 +1,14 @@
 // src/lib/store.ts
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "@/redux-slice/cart-slice";
+import adminReducer from "@/redux-slice/admin-slice";
 // Import your slices here
 
 export const store = configureStore({
   reducer: {
     // Add your slice reducers here
     CartSlice: cartReducer,
+    AdminSlice: adminReducer,
   },
   // Optional: Add middleware or other configurations
 });

@@ -4,14 +4,17 @@ import Link from "next/link";
 import { ShoppingCart, User } from "lucide-react";
 import { useState } from "react";
 import CartSidebar from "@/components/cart-sidebar/cart-sidebar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { showAdminPart } from "@/redux-slice/admin-slice";
 
 export default function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const cartItems = useSelector((state: RootState) => state.CartSlice.items);
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const dispatch = useDispatch();
+  const { isAdmin } = useSelector((state: RootState) => state?.AdminSlice);
   return (
     <>
       <header className="sticky top-0 z-50 bg-white shadow-md">
@@ -29,41 +32,81 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          <div className="flex gap-4 items-center relative">
-            {/* Cart Button */}
+          <div className="flex items-center justify-between gap-4 relative">
+            {/* Admin Login Button */}
             <button
-              onClick={() => setIsSidebarOpen(true)}
-              className="relative hover:text-blue-600 transition"
+              type="button"
+              onClick={() => dispatch(showAdminPart())}
+              aria-label="Login as Admin"
+              className="bg-black text-white rounded-lg px-4 py-2 hover:bg-gray-900 transition"
             >
-              <ShoppingCart size={22} />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-semibold">
-                  {cartCount}
-                </span>
-              )}
+              {isAdmin ? "See data as normal user" : "Login as Admin"}
             </button>
 
-            {/* User Icon */}
-            <div className="relative">
-              <button
-                onClick={() => setShowUserDropdown(!showUserDropdown)}
-                className="hover:text-blue-600 transition"
-              >
-                <User size={22} />
-              </button>
+            {isAdmin && (
+              <>
+                <Link
+                  href={"/admin-dashboard"}
+                  target="_blank"
+                  type="button"
+                  className="bg-black text-white rounded-lg px-4 py-2 hover:bg-gray-900 transition"
+                >
+                  Go To Dashboard
+                </Link>
+                <Link
+                  href={"/add-product"}
+                  target="_blank"
+                  type="button"
+                  className="bg-black text-white rounded-lg px-4 py-2 hover:bg-gray-900 transition"
+                >
+                  Add a product
+                </Link>
+              </>
+            )}
 
-              {/* Dropdown */}
-              {showUserDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border rounded-md z-50">
-                  <div className="px-4 py-2 text-sm text-gray-700 border-b">
-                    Hello, <strong>Devansh</strong>
-                  </div>
-                  <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Edit Profile
+            {/* Cart Button */}
+            {!isAdmin && (
+              <>
+                <button
+                  type="button"
+                  aria-label="View Cart"
+                  onClick={() => setIsSidebarOpen(true)}
+                  className="relative text-gray-800 hover:text-blue-600 transition"
+                >
+                  <ShoppingCart size={22} />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-semibold">
+                      {cartCount}
+                    </span>
+                  )}
+                </button>
+
+                <div className="relative">
+                  <button
+                    type="button"
+                    aria-label="User Menu"
+                    onClick={() => setShowUserDropdown(!showUserDropdown)}
+                    className="text-gray-800 hover:text-blue-600 transition"
+                  >
+                    <User size={22} />
                   </button>
+
+                  {showUserDropdown && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border rounded-md z-50 overflow-hidden">
+                      <div className="px-4 py-2 text-sm text-gray-700 border-b">
+                        Hello, <strong>Devansh</strong>
+                      </div>
+                      <button
+                        type="button"
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+                      >
+                        Edit Profile
+                      </button>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </>
+            )}
           </div>
         </div>
       </header>
