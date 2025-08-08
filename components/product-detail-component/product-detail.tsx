@@ -1,11 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux-slice/cart-slice";
-import { useRouter } from "next/navigation";
-import { RootState } from "@/store/store";
-import Link from "next/link";
 import ProductDeleteDialog from "../product-delete-dialog/product-delete-dialog";
 
 type ProductProps = {
@@ -29,7 +26,6 @@ const ProductDetailsCard: React.FC<{
   const [showDeleteComponent, setShowDeleteComponent] = useState(false);
   const dispatch = useDispatch();
   const [added, setAdded] = useState(false);
-  const { isAdmin } = useSelector((state: RootState) => state?.AdminSlice);
 
   console.log(product);
   const discountedPrice =
@@ -126,38 +122,17 @@ const ProductDetailsCard: React.FC<{
 
             {/* CTA Buttons */}
             <div className="flex flex-col md:flex-row gap-4 pt-4">
-              {!isAdmin && (
-                <button
-                  onClick={handleAddToCart}
-                  disabled={added}
-                  className={`flex-1 py-3 rounded-lg transition text-white ${
-                    added
-                      ? "bg-green-600 cursor-not-allowed"
-                      : "bg-gradient-to-r from-black to-gray-900 hover:from-gray-800 hover:to-black"
-                  }`}
-                >
-                  {added ? "Added" : "Add to Cart"}
-                </button>
-              )}
-
-              {isAdmin && (
-                <>
-                  <Link
-                    target="_blank"
-                    href={`/update-product/${product?.productId}`}
-                    className="flex-1 py-3 rounded-lg border border-black text-black text-center hover:bg-black hover:text-white transition"
-                  >
-                    Update Product
-                  </Link>
-
-                  <button
-                    onClick={() => setShowDeleteComponent(true)}
-                    className="flex-1 py-3 rounded-lg bg-red-600 text-white hover:bg-red-700 transition"
-                  >
-                    Delete Product
-                  </button>
-                </>
-              )}
+              <button
+                onClick={handleAddToCart}
+                disabled={added}
+                className={`flex-1 py-3 rounded-lg transition text-white ${
+                  added
+                    ? "bg-green-600 cursor-not-allowed"
+                    : "bg-gradient-to-r from-black to-gray-900 hover:from-gray-800 hover:to-black"
+                }`}
+              >
+                {added ? "Added" : "Add to Cart"}
+              </button>
             </div>
           </div>
         </div>

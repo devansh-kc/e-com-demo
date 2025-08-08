@@ -62,7 +62,7 @@ export default function CheckoutPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to place order");
+        throw new Error(data.message || "Failed to place order");
       }
 
       toast.success("Order placed successfully!");

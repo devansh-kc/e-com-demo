@@ -3,10 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux-slice/cart-slice"; // ✅ make sure this path is correct
-import { RootState } from "@/store/store";
-import { Trash2 } from "lucide-react";
 import ProductDeleteDialog from "../product-delete-dialog/product-delete-dialog";
 
 interface ProductCardProps {
@@ -31,7 +29,6 @@ export function ProductCard({
   const dispatch = useDispatch();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const { isAdmin } = useSelector((state: RootState) => state?.AdminSlice);
   const handleAddToCart = () => {
     dispatch(
       addToCart({
@@ -55,16 +52,6 @@ export function ProductCard({
             height={300}
             className="w-full h-64 object-contain bg-gray-50"
           />
-
-          {isAdmin && (
-            <button
-              onClick={() => setShowDeleteConfirm(true)} // <== ✅ ADD THIS
-              className="absolute top-2 right-2 bg-black text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-600 transition"
-              aria-label="Delete Product"
-            >
-              <Trash2 />
-            </button>
-          )}
         </figure>
 
         <div className="p-4 space-y-2">
@@ -88,22 +75,12 @@ export function ProductCard({
               View Details
             </Link>
 
-            {isAdmin ? (
-              <Link
-                href={`/update-product/${productData?.productId}`}
-                target="_blank"
-                className="flex-1 text-center bg-white text-black border hover:bg-white hover:text-black px-4 py-2 rounded hover:bg-gray-800 transition"
-              >
-                Update product
-              </Link>
-            ) : (
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 bg-white border border-black text-black hover:bg-black hover:text-white transition px-4 py-2 rounded"
-              >
-                Add to Cart
-              </button>
-            )}
+            <button
+              onClick={handleAddToCart}
+              className="flex-1 bg-white border border-black text-black hover:bg-black hover:text-white transition px-4 py-2 rounded"
+            >
+              Add to Cart
+            </button>
           </div>
         </div>
       </article>

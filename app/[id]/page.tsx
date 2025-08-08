@@ -1,4 +1,5 @@
 import ProductDetailsCard from "@/components/product-detail-component/product-detail";
+import ProductNotFound from "@/components/product-not-found/product-not-found";
 import { headers } from "next/headers";
 
 export default async function UserPage({
@@ -13,6 +14,9 @@ export default async function UserPage({
   const res = await fetch(`${protocol}://${host}/api/fetch-product-data/${id}`);
 
   if (!res.ok) {
+    if (res.status === 404) {
+      return <ProductNotFound />;
+    }
     console.log(res);
     throw new Error("Failed to fetch products");
   }

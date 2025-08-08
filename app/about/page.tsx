@@ -8,34 +8,35 @@ export default function AboutPage() {
     <div className="min-h-screen bg-white text-gray-800 px-6 py-12">
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-4xl font-bold text-center text-blue-600">
-          About Acme Electronic Hub
+          About Our E-Commerce Platform
         </h1>
 
         <p className="text-lg leading-relaxed">
-          Welcome to <strong>Acme Electronic Hub</strong> – your one-stop
-          destination for premium electronic gadgets at unbeatable prices.
-          Whether you&apos;re a tech enthusiast or a casual buyer, we’re here to
-          bring you the latest and greatest in electronics, right to your
-          doorstep.
+          Welcome to our modern e-commerce platform — your trusted destination
+          for a seamless online shopping experience. Whether you&apos;re here to
+          explore high-quality products or manage orders as an admin, our
+          application is built to deliver speed, efficiency, and reliability.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           <div>
-            <h2 className="text-2xl font-semibold mb-2">Our Mission</h2>
+            <h2 className="text-2xl font-semibold mb-2">Our Vision</h2>
             <p className="text-gray-700 leading-relaxed">
-              Our mission is to make high-quality electronic products accessible
-              and affordable for everyone. We’re committed to delivering a
-              seamless shopping experience powered by modern technology.
+              We aim to provide a dynamic and scalable shopping experience by
+              leveraging modern technologies like Next.js, MongoDB, and Redux.
+              From browsing products to completing secure checkouts, we focus on
+              delivering a hassle-free experience to our users.
             </p>
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold mb-2">Why Choose Us?</h2>
+            <h2 className="text-2xl font-semibold mb-2">Key Features</h2>
             <ul className="list-disc pl-5 space-y-2 text-gray-700">
-              <li>Curated product selection</li>
-              <li>Fast and reliable shipping</li>
-              <li>Secure checkout process</li>
-              <li>Responsive customer support</li>
+              <li>Product listings with dynamic filtering and search</li>
+              <li>Cart management with Redux Toolkit</li>
+              <li>Secure checkout with real-time inventory updates</li>
+              <li>Admin dashboard for order management</li>
+              <li>Dispatch and cancel shipment functionality</li>
             </ul>
           </div>
         </div>
@@ -43,10 +44,11 @@ export default function AboutPage() {
         <div className="mt-10">
           <h2 className="text-2xl font-semibold mb-4">Tech Stack</h2>
           <ul className="list-disc pl-5 space-y-2 text-gray-700">
-            <li>Next.js & React</li>
+            <li>Next.js & React for frontend</li>
             <li>Tailwind CSS for styling</li>
-            <li>Redux Toolkit for cart management</li>
-            <li>FakeStore API (for mock product data)</li>
+            <li>Redux Toolkit for state management</li>
+            <li>MongoDB with Mongoose for database modeling</li>
+            <li>Next.js API routes for backend integration</li>
           </ul>
         </div>
 
