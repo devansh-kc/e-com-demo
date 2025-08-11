@@ -60,7 +60,7 @@ export default function Navbar() {
               {showUserDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border rounded-md z-50 overflow-hidden">
                   <div className="px-4 py-2 text-sm text-gray-700 border-b">
-                    Hello, <strong>Devansh</strong>
+                    Hello, <strong>Vivek Zala</strong>
                   </div>
                   <button
                     type="button"
