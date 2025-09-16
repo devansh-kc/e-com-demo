@@ -48,14 +48,15 @@ export default function Navbar() {
             </button>
 
             <div className="relative">
-              <button
+              <Link
                 type="button"
                 aria-label="User Menu"
-                onClick={() => setShowUserDropdown(!showUserDropdown)}
+                href={"/login"}
+                // onClick={() => setShowUserDropdown(!showUserDropdown)}
                 className="text-gray-800 hover:text-blue-600 transition"
               >
                 <User size={22} />
-              </button>
+              </Link>
 
               {showUserDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border rounded-md z-50 overflow-hidden">
