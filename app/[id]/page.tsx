@@ -17,7 +17,6 @@ export default async function UserPage({
     if (res.status === 404) {
       return <ProductNotFound />;
     }
-    console.log(res);
     throw new Error("Failed to fetch products");
   }
 
