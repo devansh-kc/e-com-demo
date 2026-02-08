@@ -1,6 +1,6 @@
 import { Schema, model, models, Document } from "mongoose";
 
-export interface UserInformationModel extends Document {
+export interface UserSchemaModel extends Document {
   email: string;
   state: string;
   firstName: string;
@@ -9,27 +9,29 @@ export interface UserInformationModel extends Document {
   apartment?: string;
   city: string;
   pincode: string;
+  password: string;
 }
 
-const UserInformationSchema = new Schema<UserInformationModel>(
+const UserSchema = new Schema<UserSchemaModel>(
   {
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     state: { type: String, required: true },
     firstName: { type: String, required: true },
-    lastName: { type: String, required: false },
+    lastName: { type: String, required: true },
     address: { type: String, required: true },
-    apartment: { type: String, required: true },
+    apartment: { type: String, required: false }, // Fixed: optional
     city: { type: String, required: true },
-    pincode: { type: String, required: false },
+    pincode: { type: String, required: true },
+    password: { type: String, required: true },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-// ✅ This prevents the "Cannot overwrite model" error
-const UserInformationModel =
-  models.ProductData ||
-  model<UserInformationModel>("UserInformationModel", UserInformationSchema);
+// Fixed: Correct model name reference
+const UserModel =
+  models.UserInformationModel ||
+  model<UserSchemaModel>("UserInformationModel", UserSchema);
 
-export default UserInformationModel;
+export default UserModel;

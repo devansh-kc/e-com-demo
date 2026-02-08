@@ -2,78 +2,147 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (error) setError("");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Email:", email, "Password:", password);
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store token in localStorage (optional, since it's also in httpOnly cookie)
+        if (data.token) {
+          localStorage.setItem("auth-token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+        }
+
+        // Redirect to dashboard or home
+        router.push("/dashboard");
+      } else {
+        setError(data.message || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("An error occurred. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6">
+          Welcome Back
+        </h2>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Email */}
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-700 mb-1"
             >
               Email
             </label>
             <input
               id="email"
+              name="email"
               type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your.email@example.com"
+              value={formData.email}
+              onChange={handleChange}
               required
-              className="mt-1 block w-full px-4 py-2 border rounded-lg focus:ring-1 focus:ring-black focus:outline-none"
+              autoComplete="email"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:outline-none"
             />
           </div>
 
-          {/* Password */}
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-700 mb-1"
             >
               Password
             </label>
             <input
               id="password"
+              name="password"
               type="password"
               placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
               required
-              className="mt-1 block w-full px-4 py-2 border rounded-lg focus:ring-1 focus:ring-black focus:outline-none"
+              autoComplete="current-password"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:outline-none"
             />
           </div>
 
-          {/* Login Button */}
+          <div className="flex items-center justify-between text-sm">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                className="mr-2 rounded border-gray-300 focus:ring-black"
+              />
+              <span className="text-gray-600">Remember me</span>
+            </label>
+            <Link
+              href="/forgot-password"
+              className="text-black hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
           <button
             type="submit"
-            className="w-full bg-black text-white py-2 rounded-lg hover:bg-black transition"
+            disabled={isLoading}
+            className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition disabled:bg-gray-400 disabled:cursor-not-allowed font-medium"
           >
-            Login
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        {/* Links */}
-        <div className="flex justify-between mt-4 text-sm">
-          <Link href="/signup" className="text-black hover:underline">
-            Create Account
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Don't have an account?{" "}
+          <Link
+            href="/signup"
+            className="text-black font-medium hover:underline"
+          >
+            Sign up
           </Link>
-          <Link href="/forgot-password" className="text-black hover:underline">
-            Forgot Password?
-          </Link>
-        </div>
+        </p>
       </div>
     </div>
   );
