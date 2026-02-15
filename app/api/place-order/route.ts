@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/connection";
-import ProductDataModel from "@/models/userInformationmodel/user-informationn-model";
+import ProductDataModel from "@/models/cartItemModel/cart-item-model";
 import OrderModel from "@/models/OrderInformation/order-information-model";
 
 export async function POST(req: NextRequest) {
@@ -25,20 +25,20 @@ export async function POST(req: NextRequest) {
       if (!product) {
         return NextResponse.json(
           { message: `Product not found: ${productId}` },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
       if (product.quantity < quantity) {
         return NextResponse.json(
           { message: `Insufficient stock for ${product.title}` },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
       await ProductDataModel.updateOne(
         { productId },
-        { $inc: { quantity: -quantity } }
+        { $inc: { quantity: -quantity } },
       );
 
       orderItems.push({
@@ -62,13 +62,13 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Order placed successfully", order },
-      { status: 200 }
+      { status: 200 },
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json(
       { message: error.message || "Something went wrong" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
